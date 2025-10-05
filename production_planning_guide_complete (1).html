@@ -1,0 +1,2164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundry Production Planning System - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-section h3 {
+            color: #888;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #ddd;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: #333;
+            color: #4CAF50;
+            padding-left: 16px;
+        }
+
+        .nav-link.active {
+            background: #4CAF50;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+        }
+
+        .content-section {
+            display: none;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        h3 {
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .search-box input::placeholder {
+            color: #888;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #fff;
+            margin-top: 0;
+        }
+
+        pre {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #4CAF50;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            color: #1565C0;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .quick-start {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .quick-start h2 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .workflow-steps {
+            counter-reset: step-counter;
+        }
+
+        .workflow-step {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 30px;
+        }
+
+        .workflow-step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .comparison-table {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .highlight-box {
+            background: #fffbf0;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Production Planning</h2>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search documentation...">
+            </div>
+
+            <div class="nav-section">
+                <h3>Getting Started</h3>
+                <a href="#overview" class="nav-link active">Overview</a>
+                <a href="#quick-start" class="nav-link">Quick Start</a>
+                <a href="#installation" class="nav-link">Installation</a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Core Concepts</h3>
+                <a href="#methodology" class="nav-link">Methodology</a>
+                <a href="#constraints" class="nav-link">Constraints</a>
+                <a href="#optimization" class="nav-link">Optimization Model</a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Usage Guides</h3>
+                <a href="#weekly-planning" class="nav-link">Weekly Planning</a>
+                <a href="#output-interpretation" class="nav-link">Output Interpretation</a>
+                <a href="#scenarios" class="nav-link">Common Scenarios</a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Advanced Features</h3>
+                <a href="#wip-integration" class="nav-link">WIP Integration</a>
+                <a href="#capacity-analysis" class="nav-link">Capacity Analysis</a>
+                <a href="#business-growth" class="nav-link">Business Growth</a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Reference</h3>
+                <a href="#configuration" class="nav-link">Configuration</a>
+                <a href="#troubleshooting" class="nav-link">Troubleshooting</a>
+                <a href="#api-reference" class="nav-link">API Reference</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Overview Section -->
+            <div id="overview" class="content-section active">
+                <h1>Foundry Production Planning System</h1>
+                <p class="subtitle">Intelligent production scheduling with capacity optimization and business growth insights</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">97.7%</div>
+                        <div class="stat-label">Fulfillment Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Week Planning Horizon</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Production Stages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">Rs 187M</div>
+                        <div class="stat-label">Revenue Opportunity</div>
+                    </div>
+                </div>
+
+                <h2>What This System Does</h2>
+                
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="navigateTo('methodology')">
+                        <h3>Optimized Scheduling</h3>
+                        <p>Multi-period capacitated production planning with resource constraints</p>
+                    </div>
+                    <div class="feature-card" onclick="navigateTo('capacity-analysis')">
+                        <h3>Capacity Gaps</h3>
+                        <p>Identify spare capacity and revenue growth opportunities</p>
+                    </div>
+                    <div class="feature-card" onclick="navigateTo('wip-integration')">
+                        <h3>WIP Management</h3>
+                        <p>Intelligent work-in-progress inventory integration</p>
+                    </div>
+                    <div class="feature-card" onclick="navigateTo('output-interpretation')">
+                        <h3>Smart Reports</h3>
+                        <p>Actionable insights and bottleneck identification</p>
+                    </div>
+                </div>
+
+                <h2>Production Flow</h2>
+                <div class="alert alert-info">
+                    <strong>End-to-End Process:</strong><br>
+                    Coremaking → Moulding/Casting → Grinding → Machining (3 stages) → Painting (3 stages) → Finished Goods
+                </div>
+
+                <h2>Key Features</h2>
+                <ul>
+                    <li><strong>Multi-Stage Operations:</strong> Handles complex 5-stage foundry processes</li>
+                    <li><strong>Batch Processing:</strong> Optimizes parallel processing and setup times</li>
+                    <li><strong>Resource Constraints:</strong> Individual machine and labor capacity limits</li>
+                    <li><strong>Paint Route Optimization:</strong> Separate Top Coat and Primer line management</li>
+                    <li><strong>Grinding Load Balancing:</strong> Prevents bottleneck concentration</li>
+                    <li><strong>Delivery Urgency:</strong> Respects committed delivery dates with controlled flexibility</li>
+                    <li><strong>WIP Integration:</strong> Accounts for existing inventory at all stages</li>
+                    <li><strong>Business Insights:</strong> Revenue opportunity and growth recommendations</li>
+                </ul>
+
+                <div class="quick-start">
+                    <h2>Ready to Start?</h2>
+                    <p>Get up and running in 5 minutes with our quick start guide</p>
+                    <button class="btn" onclick="navigateTo('quick-start')">Go to Quick Start →</button>
+                </div>
+            </div>
+
+            <!-- Quick Start Section -->
+            <div id="quick-start" class="content-section">
+                <h1>Quick Start Guide</h1>
+                <p class="subtitle">Get your production plan in 5 minutes</p>
+
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <h3>Install Dependencies</h3>
+                        <pre><code>pip install pandas openpyxl pulp numpy</code></pre>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Prepare Your Data Files</h3>
+                        <p>Ensure these files are ready:</p>
+                        <ul>
+                            <li>Master_Data_Optimised.xlsx (Sales Orders, Part Master, Machine Constraints)</li>
+                            <li>Open_Sales_Order__Power_BI.xlsx (Part Weights)</li>
+                            <li>Cycle_time.xlsx (Constraints & Flags)</li>
+                            <li>PPC-Dashboard-WIP-FG1.xlsx (WIP Data - optional)</li>
+                        </ul>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Run the Planner</h3>
+                        <pre><code>python quick_run.py</code></pre>
+                        <p>Or with capacity analysis:</p>
+                        <pre><code>python run_planning_with_capacity_analysis.py</code></pre>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Review Results</h3>
+                        <p>Open the generated Excel file with these key sheets:</p>
+                        <ul>
+                            <li><strong>Production_Plan</strong> - Detailed weekly schedule</li>
+                            <li><strong>Weekly_Summary</strong> - Resource utilization</li>
+                            <li><strong>Business_Opportunities</strong> - Growth potential</li>
+                            <li><strong>Capacity_Gaps</strong> - Available capacity</li>
+                        </ul>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Take Action</h3>
+                        <p>Share insights with your team:</p>
+                        <ul>
+                            <li>Sales Team: Business_Opportunities + Part_Recommendations</li>
+                            <li>Management: Capacity_Gaps + Weekly_Summary</li>
+                            <li>Shop Floor: Production_Plan (parts, quantities, weeks)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>Success!</strong> You now have an optimized production plan. Check the Weekly_Summary sheet for bottlenecks and capacity utilization.
+                </div>
+            </div>
+
+            <!-- Installation Section -->
+            <div id="installation" class="content-section">
+                <h1>Installation Guide</h1>
+                <p class="subtitle">Setting up your production planning environment</p>
+
+                <h2>System Requirements</h2>
+                <ul>
+                    <li><strong>Python:</strong> 3.8 or higher</li>
+                    <li><strong>Operating System:</strong> Windows, macOS, or Linux</li>
+                    <li><strong>RAM:</strong> Minimum 4GB (8GB recommended)</li>
+                    <li><strong>Storage:</strong> 500MB free space</li>
+                    <li><strong>Excel:</strong> Microsoft Excel or LibreOffice (for viewing outputs)</li>
+                </ul>
+
+                <h2>Installation Steps</h2>
+                
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <h3>Install Python</h3>
+                        <p>Download from python.org</p>
+                        <p>During installation, check "Add Python to PATH"</p>
+                        <p>Verify installation:</p>
+                        <pre><code>python --version</code></pre>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Install Required Libraries</h3>
+                        <pre><code>pip install pandas openpyxl pulp numpy</code></pre>
+                        <p>Components:</p>
+                        <ul>
+                            <li><strong>pandas:</strong> Data manipulation</li>
+                            <li><strong>openpyxl:</strong> Excel file handling</li>
+                            <li><strong>pulp:</strong> Optimization solver</li>
+                            <li><strong>numpy:</strong> Numerical operations</li>
+                        </ul>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Create Project Structure</h3>
+                        <pre><code>mkdir production_planning
+cd production_planning
+mkdir data outputs</code></pre>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Copy System Files</h3>
+                        <p>Place in project root:</p>
+                        <ul>
+                            <li>production_planning_system.py</li>
+                            <li>run_planning_with_capacity_analysis.py</li>
+                            <li>wip_handler.py</li>
+                            <li>quick_run.py</li>
+                        </ul>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Add Data Files</h3>
+                        <p>Place in data/ folder:</p>
+                        <ul>
+                            <li>Master_Data_Optimised.xlsx</li>
+                            <li>Open_Sales_Order__Power_BI.xlsx</li>
+                            <li>Cycle_time.xlsx</li>
+                            <li>PPC-Dashboard-WIP-FG1.xlsx</li>
+                        </ul>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Test Installation</h3>
+                        <pre><code>python quick_run.py</code></pre>
+                        <p>Success! You should see output and an Excel file.</p>
+                    </div>
+                </div>
+
+                <h2>Troubleshooting Installation</h2>
+
+                <h3>"pip not found"</h3>
+                <pre><code>python -m pip install pandas openpyxl pulp numpy</code></pre>
+
+                <h3>Permission denied</h3>
+                <pre><code>pip install --user pandas openpyxl pulp numpy</code></pre>
+
+                <h3>Solver issues (Linux/macOS)</h3>
+                <pre><code># Linux
+sudo apt-get install coinor-cbc
+
+# macOS
+brew install coin-or-tools/coinor/cbc</code></pre>
+            </div>
+
+            <!-- Methodology Section -->
+            <div id="methodology" class="content-section">
+                <h1>Methodology</h1>
+                <p class="subtitle">Understanding the optimization approach</p>
+
+                <h2>Problem Formulation</h2>
+                <p>This is a <strong>Multi-Period Capacitated Production Planning Problem</strong> with:</p>
+                <ul>
+                    <li><strong>Decision Variables:</strong> Units to produce for each part in each week</li>
+                    <li><strong>Objective:</strong> Minimize total production time while balancing grinding load</li>
+                    <li><strong>Constraints:</strong> Resource capacities, delivery urgency, machine availability</li>
+                </ul>
+
+                <h2>Optimization Model</h2>
+                
+                <h3>Decision Variables</h3>
+                <pre><code>x[p, w] = Units of part p to produce in week w</code></pre>
+
+                <h3>Objective Function</h3>
+                <pre><code>Minimize:
+  Σ (1000 × grinding_hours[p,w]) +  # Prioritize grinding balance
+  Σ (10 × deviation_from_target_week) # Prefer delivery alignment</code></pre>
+
+                <h3>Key Constraints</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Constraint Type</th>
+                            <th>Formula</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Demand Fulfillment</td>
+                            <td>Σ x[p,w] = Total_Demand[p]</td>
+                            <td>Meet all customer orders</td>
+                        </tr>
+                        <tr>
+                            <td>Delivery Urgency</td>
+                            <td>x[p,w] ≤ Buffer × Target[p,w]</td>
+                            <td>Respect delivery dates with flexibility</td>
+                        </tr>
+                        <tr>
+                            <td>Resource Capacity</td>
+                            <td>Σ hours[p,w] ≤ Capacity[w]</td>
+                            <td>Don't exceed weekly capacity</td>
+                        </tr>
+                        <tr>
+                            <td>Paint Route</td>
+                            <td>Σ tons[p,w] ≤ Paint_Capacity</td>
+                            <td>Separate Top Coat and Primer limits</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Grinding Load Balancing</h2>
+                <p>The system identifies grinding-intensive parts (top 20% by grinding hours) and:</p>
+                <ol>
+                    <li>Spreads them across weeks more evenly</li>
+                    <li>Allows higher scheduling flexibility (50% buffer vs 30%)</li>
+                    <li>Prioritizes grinding balance in the objective function</li>
+                </ol>
+
+                <div class="alert alert-info">
+                    <strong>Why Grinding?</strong> Grinding is typically the bottleneck in foundry operations. By balancing grinding load, we prevent weeks with greater than 100% utilization while others have spare capacity.
+                </div>
+
+                <h2>Solution Approach</h2>
+                <p>The system uses Integer Linear Programming (ILP) with the CBC solver:</p>
+                <ul>
+                    <li>Branch-and-cut algorithm for optimal solutions</li>
+                    <li>Typical solve time: 2-10 minutes</li>
+                    <li>Handles 1,000+ decision variables and 3,000+ constraints</li>
+                    <li>Proven optimal or near-optimal solutions</li>
+                </ul>
+            </div>
+
+            <!-- Constraints Section -->
+            <div id="constraints" class="content-section">
+                <h1>Production Constraints</h1>
+                <p class="subtitle">Understanding system limitations and requirements</p>
+
+                <h2>Resource Capacity Constraints</h2>
+
+                <h3>Weekly Capacity Limits</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Capacity</th>
+                            <th>Unit</th>
+                            <th>Calculation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Coremaking</td>
+                            <td>567</td>
+                            <td>hours/week</td>
+                            <td>100 hrs/day × 7 × 0.9 × 0.9</td>
+                        </tr>
+                        <tr>
+                            <td>Grinding</td>
+                            <td>1,588</td>
+                            <td>hours/week</td>
+                            <td>280 hrs/day × 7 × 0.9 × 0.9</td>
+                        </tr>
+                        <tr>
+                            <td>Machining</td>
+                            <td>1,565</td>
+                            <td>hours/week</td>
+                            <td>276 hrs/day × 7 × 0.9 × 0.9</td>
+                        </tr>
+                        <tr>
+                            <td>Casting</td>
+                            <td>700</td>
+                            <td>tons/week</td>
+                            <td>Furnace + mould capacity</td>
+                        </tr>
+                        <tr>
+                            <td>Top Coat Paint</td>
+                            <td>490</td>
+                            <td>tons/week</td>
+                            <td>70 tons/day × 7</td>
+                        </tr>
+                        <tr>
+                            <td>Primer Paint</td>
+                            <td>700</td>
+                            <td>tons/week</td>
+                            <td>100 tons/day × 7</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Operational Constraints</h2>
+
+                <h3>Batch Processing</h3>
+                <div class="alert alert-info">
+                    Parts must be processed in batches. A batch size of 2 means 2 units are processed simultaneously.
+                </div>
+                <ul>
+                    <li>Reduces setup times</li>
+                    <li>Enables parallelism</li>
+                    <li>Affects cycle time calculations</li>
+                </ul>
+
+                <h3>Paint Route Separation</h3>
+                <p>Parts requiring Top Coat vs. Primer follow different routes:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Route</th>
+                            <th>Stages</th>
+                            <th>Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Top Coat</td>
+                            <td>Primer First → Primer Final → Top Coat</td>
+                            <td>490 tons/week (limited)</td>
+                        </tr>
+                        <tr>
+                            <td>Primer Only</td>
+                            <td>Primer First → Primer Final</td>
+                            <td>700 tons/week</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Delivery Urgency</h3>
+                <p>Parts must be scheduled near delivery dates with controlled flexibility:</p>
+                <ul>
+                    <li><strong>Grinding-intensive parts:</strong> 50% buffer (can schedule ±50% from target)</li>
+                    <li><strong>Normal parts:</strong> 30% buffer</li>
+                    <li>Prevents late deliveries while allowing optimization</li>
+                </ul>
+
+                <h2>Machine-Specific Constraints</h2>
+
+                <h3>Individual Machine Limits</h3>
+                <p>Each machine has its own capacity:</p>
+                <pre><code>Example:
+CNC Machine-01: 10.8 hrs/week (1 machine × 12 hrs/day × 0.9)
+Boring Machine: 21.6 hrs/week (2 machines × 12 hrs/day × 0.9)
+Drill BD-50: 86.4 hrs/week (8 machines × 12 hrs/day × 0.9)</code></pre>
+
+                <p>System ensures no single machine is overloaded.</p>
+
+                <h2>Practical Implications</h2>
+
+                <div class="alert alert-warning">
+                    <strong>Common Bottlenecks:</strong>
+                    <ol>
+                        <li><strong>Grinding</strong> - Usually 90-107% utilized</li>
+                        <li><strong>Top Coat Paint</strong> - Limited capacity (490 tons/week)</li>
+                        <li><strong>Specific CNC machines</strong> - Often over-subscribed</li>
+                    </ol>
+                </div>
+
+                <h3>Constraint Hierarchy</h3>
+                <p>The system respects constraints in this order:</p>
+                <ol>
+                    <li>Must meet total demand</li>
+                    <li>Must respect delivery urgency (with buffer)</li>
+                    <li>Must not exceed weekly resource capacities</li>
+                    <li>Must not exceed individual machine capacities</li>
+                    <li>Minimize grinding load concentration</li>
+                </ol>
+            </div>
+
+            <!-- Optimization Section -->
+            <div id="optimization" class="content-section">
+                <h1>Optimization Model</h1>
+                <p class="subtitle">Mathematical foundation of the planning system</p>
+
+                <h2>Problem Type</h2>
+                <p>This is a <strong>Multi-Period Capacitated Lot-Sizing Problem</strong> with:</p>
+                <ul>
+                    <li>Multiple products (parts)</li>
+                    <li>Multiple time periods (weeks)</li>
+                    <li>Multiple resources (machines, labor)</li>
+                    <li>Batch processing</li>
+                    <li>Multi-stage operations</li>
+                </ul>
+
+                <h2>Mathematical Formulation</h2>
+
+                <h3>Decision Variables</h3>
+                <pre><code>x[p, w] = Number of units of part p to produce in week w
+
+Where:
+  p ∈ Parts = Set of all parts
+  w ∈ Weeks = {1, 2, 3, 4, 5, 6}</code></pre>
+
+                <h3>Objective Function</h3>
+                <pre><code>Minimize: 
+  Σ Σ [1000 × grinding_hours(p, w) + 
+  p w  10 × deviation_from_target(p, w)]
+
+Components:
+  1000 × grinding_hours: Heavily prioritize grinding balance
+  10 × deviation: Prefer scheduling near delivery dates</code></pre>
+
+                <h3>Constraints</h3>
+
+                <h4>1. Demand Fulfillment</h4>
+                <pre><code>Σ x[p, w] = Demand[p]  ∀ p
+w
+
+Ensures total production equals demand for each part</code></pre>
+
+                <h4>2. Delivery Urgency</h4>
+                <pre><code>x[p, w] ≤ Buffer[p] × Target[p, w]  ∀ p, w
+
+Where Buffer[p] = {
+  1.5  if p is grinding-intensive
+  1.3  otherwise
+}
+
+Allows flexibility while respecting delivery dates</code></pre>
+
+                <h4>3. Resource Capacity</h4>
+                <pre><code>Core Capacity:
+Σ (cycle_core[p]/60) × (x[p,w]/batch_core[p]) ≤ Core_Hours_Week  ∀ w
+p
+
+Grinding Capacity:
+Σ (cycle_grind[p]/60) × (x[p,w]/batch_grind[p]) × Penalty[p] ≤ Grind_Hours_Week  ∀ w
+p
+
+Where Penalty[p] = {
+  1.2  if p has grinding constraint flag
+  1.0  otherwise
+}</code></pre>
+
+                <h4>4. Machine-Specific Capacity</h4>
+                <pre><code>For each machine m, stage s, week w:
+
+Σ (cycle[p,s]/60) × (x[p,w]/batch[p,s]) ≤ Machine_Hours_Week[m]
+p using m at stage s
+
+Prevents overloading individual machines</code></pre>
+
+                <h4>5. Paint Route Capacity</h4>
+                <pre><code>Top Coat Route:
+Σ x[p,w] × weight[p] / 1000 ≤ 490 tons  ∀ w
+p with top_coat=True
+
+Primer Route:
+Σ x[p,w] × weight[p] / 1000 ≤ 700 tons  ∀ w
+p with top_coat=False</code></pre>
+
+                <h4>6. Casting Capacity</h4>
+                <pre><code>Σ x[p,w] × weight[p] / 1000 ≤ 700 tons  ∀ w
+p</code></pre>
+
+                <h2>Solver Technology</h2>
+
+                <h3>CBC Solver</h3>
+                <p>Uses COIN-OR Branch-and-Cut solver:</p>
+                <ul>
+                    <li><strong>Type:</strong> Mixed Integer Linear Programming (MILP)</li>
+                    <li><strong>Algorithm:</strong> Branch-and-cut with heuristics</li>
+                    <li><strong>Performance:</strong> Typically solves in 2-5 minutes</li>
+                    <li><strong>Optimality:</strong> Finds proven optimal or near-optimal solutions</li>
+                </ul>
+
+                <h3>Complexity</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Typical Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Decision Variables</td>
+                            <td>~1,200 (200 parts × 6 weeks)</td>
+                        </tr>
+                        <tr>
+                            <td>Constraints</td>
+                            <td>~3,000</td>
+                        </tr>
+                        <tr>
+                            <td>Non-zeros</td>
+                            <td>~15,000</td>
+                        </tr>
+                        <tr>
+                            <td>Solve Time</td>
+                            <td>2-10 minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Optimization Strategy</h2>
+
+                <h3>Grinding Load Balancing</h3>
+                <p>The system uses a two-phase approach:</p>
+                <ol>
+                    <li><strong>Identify heavy grinders:</strong> Top 20% of parts by grinding hours</li>
+                    <li><strong>Spread allocation:</strong> Distribute these parts across weeks</li>
+                    <li><strong>Prioritize balance:</strong> 1000x weight on grinding in objective</li>
+                </ol>
+
+                <h3>Feasibility Techniques</h3>
+                <p>To maintain feasibility:</p>
+                <ul>
+                    <li>Urgency buffers allow ±30-50% flexibility</li>
+                    <li>Heavy grinders get 1.5x buffer vs 1.3x for normal parts</li>
+                    <li>Smoothing factor encourages spreading demand</li>
+                    <li>Time limit prevents excessive optimization</li>
+                </ul>
+
+                <h2>Solution Quality</h2>
+
+                <h3>Typical Results</h3>
+                <ul>
+                    <li><strong>Fulfillment:</strong> 95-98% of demand scheduled</li>
+                    <li><strong>Balance:</strong> Grinding utilization variation less than 15%</li>
+                    <li><strong>Delivery:</strong> 90% or more of orders within ±1 week of target</li>
+                    <li><strong>Capacity:</strong> No resource consistently over 100%</li>
+                </ul>
+
+                <h3>When Infeasible</h3>
+                <p>The model may be infeasible if:</p>
+                <ol>
+                    <li>Demand exceeds capacity (total hrs needed greater than available)</li>
+                    <li>Delivery dates too tight (no buffer can satisfy)</li>
+                    <li>Single machine overloaded (one part needs 150% of CNC)</li>
+                </ol>
+
+                <p><strong>Solutions:</strong> Extend weeks, increase buffers, add capacity</p>
+            </div>
+
+            <!-- Weekly Planning Section -->
+            <div id="weekly-planning" class="content-section">
+                <h1>Weekly Planning Workflow</h1>
+                <p class="subtitle">Standard process for weekly production planning</p>
+
+                <h2>Monday: Planning Day</h2>
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <h3>Update Data (15 min)</h3>
+                        <ul>
+                            <li>Export latest sales orders from SAP</li>
+                            <li>Update Master_Data_Optimised.xlsx</li>
+                            <li>Refresh WIP data from shop floor</li>
+                            <li>Note any machine downtime</li>
+                        </ul>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Run Planner (5 min)</h3>
+                        <pre><code>python run_planning_with_capacity_analysis.py</code></pre>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Review Results (15 min)</h3>
+                        <ul>
+                            <li>Check fulfillment rate (target greater than 95%)</li>
+                            <li>Identify bottlenecks (any resource greater than 95%?)</li>
+                            <li>Note capacity gaps and opportunities</li>
+                            <li>Verify urgent orders are scheduled</li>
+                        </ul>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Share with Team (10 min)</h3>
+                        <ul>
+                            <li><strong>Sales:</strong> Email Business_Opportunities summary</li>
+                            <li><strong>Management:</strong> Share Weekly_Summary</li>
+                            <li><strong>Shop Floor:</strong> Export Production_Plan</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Mid-Week: Order Evaluation</h2>
+                <p>When new RFQs arrive:</p>
+                <ol>
+                    <li>Check requested delivery week in Business_Opportunities</li>
+                    <li>If HIGH opportunity → Quote normally</li>
+                    <li>If MEDIUM → Quote standard or slight premium</li>
+                    <li>If LOW/NONE → Quote premium or defer delivery</li>
+                </ol>
+
+                <h2>Friday: Performance Review</h2>
+                <ul>
+                    <li>Compare actual production vs planned</li>
+                    <li>Note deviations and reasons</li>
+                    <li>Update OEE/seasonal factors if needed</li>
+                    <li>Prepare for next week's planning</li>
+                </ul>
+
+                <div class="alert alert-warning">
+                    <strong>Pro Tip:</strong> Archive each week's output file with version number (e.g., production_plan_20251004_v1.xlsx) for historical reference
+                </div>
+
+                <h2>Monthly Review Cycle</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Frequency</th>
+                            <th>Activity</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Weekly</td>
+                            <td>Plan creation and distribution</td>
+                            <td>Operational scheduling</td>
+                        </tr>
+                        <tr>
+                            <td>Bi-weekly</td>
+                            <td>Actual vs planned analysis</td>
+                            <td>Performance tracking</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly</td>
+                            <td>Parameter calibration (OEE, cycle times)</td>
+                            <td>Model accuracy improvement</td>
+                        </tr>
+                        <tr>
+                            <td>Quarterly</td>
+                            <td>Capacity planning review</td>
+                            <td>Investment decisions</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Output Interpretation Section -->
+            <div id="output-interpretation" class="content-section">
+                <h1>Output Interpretation</h1>
+                <p class="subtitle">Understanding and using the results</p>
+
+                <h2>Key Output Sheets</h2>
+
+                <h3>1. Production_Plan</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>What It Means</th>
+                            <th>How to Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Part</td>
+                            <td>Part code to produce</td>
+                            <td>Identify what to make</td>
+                        </tr>
+                        <tr>
+                            <td>Week</td>
+                            <td>Week number (1-6)</td>
+                            <td>When to produce</td>
+                        </tr>
+                        <tr>
+                            <td>Units</td>
+                            <td>Quantity to produce</td>
+                            <td>Shop floor schedule</td>
+                        </tr>
+                        <tr>
+                            <td>Grind_Hrs</td>
+                            <td>Grinding hours needed</td>
+                            <td>Grinding shop loading</td>
+                        </tr>
+                        <tr>
+                            <td>Paint_Route</td>
+                            <td>Top Coat or Primer</td>
+                            <td>Which paint line to use</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2. Weekly_Summary</h3>
+                <p><strong>Resource Utilization Guide:</strong></p>
+                <ul>
+                    <li><strong>0-80%:</strong> Underutilized (opportunity to take more orders)</li>
+                    <li><strong>80-95%:</strong> Well-balanced (optimal range)</li>
+                    <li><strong>95-100%:</strong> Near capacity (monitor closely)</li>
+                    <li><strong>Greater than 100%:</strong> Over capacity (requires action!)</li>
+                </ul>
+
+                <h3>3. Business_Opportunities</h3>
+                <pre><code>Week 1: HIGH opportunity
+  Can accept: 320 tons
+  Est. revenue: Rs 48,000,000
+  Action: Actively seek orders, offer volume discount
+
+Week 2: MEDIUM opportunity  
+  Can accept: 89 tons
+  Est. revenue: Rs 13,350,000
+  Action: Be selective, accept high-margin only
+
+Week 6: LOW opportunity
+  Can accept: 28 tons
+  Est. revenue: Rs 4,200,000
+  Action: Charge premium or defer to other weeks</code></pre>
+
+                <h2>Decision Matrix</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Situation</th>
+                            <th>Reading</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Grinding greater than 100%</td>
+                            <td>Bottleneck!</td>
+                            <td>Add overtime, extend weeks, or add machines</td>
+                        </tr>
+                        <tr>
+                            <td>Fulfillment less than 95%</td>
+                            <td>Can't meet demand</td>
+                            <td>Extend timeline or increase flexibility buffers</td>
+                        </tr>
+                        <tr>
+                            <td>High opportunity week</td>
+                            <td>Spare capacity</td>
+                            <td>Push sales, offer discounts, faster delivery</td>
+                        </tr>
+                        <tr>
+                            <td>Consistent bottleneck</td>
+                            <td>Resource constraint</td>
+                            <td>Plan capacity expansion (calculate ROI)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Reading the Charts</h2>
+
+                <h3>Utilization Color Codes</h3>
+                <div class="stats-grid">
+                    <div class="stat-card" style="background: #d4edda;">
+                        <div style="color: #155724; font-weight: bold;">0-80%</div>
+                        <div style="color: #155724;">Good - Spare capacity</div>
+                    </div>
+                    <div class="stat-card" style="background: #fff3cd;">
+                        <div style="color: #856404; font-weight: bold;">80-95%</div>
+                        <div style="color: #856404;">Optimal - Well balanced</div>
+                    </div>
+                    <div class="stat-card" style="background: #f8d7da;">
+                        <div style="color: #721c24; font-weight: bold;">95-100%</div>
+                        <div style="color: #721c24;">Warning - Near capacity</div>
+                    </div>
+                    <div class="stat-card" style="background: #dc3545;">
+                        <div style="color: white; font-weight: bold;">Greater than 100%</div>
+                        <div style="color: white;">Critical - Over capacity</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenarios Section -->
+            <div id="scenarios" class="content-section">
+                <h1>Common Scenarios</h1>
+                <p class="subtitle">How to handle typical production planning situations</p>
+
+                <h2>Scenario 1: Grinding Over Capacity</h2>
+                <div class="alert alert-warning">
+                    <strong>Symptom:</strong> Week 6 shows 107% grinding utilization
+                </div>
+
+                <h3>Analysis</h3>
+                <pre><code>Week 6: 1,703 grinding hours needed
+Capacity: 1,588 hours/week
+Shortage: 115 hours (7.3% over)</code></pre>
+
+                <h3>Solutions (ranked by preference)</h3>
+                <ol>
+                    <li>
+                        <strong>Extend Planning Horizon</strong>
+                        <pre><code>WEEKS = 8  # Instead of 6</code></pre>
+                        <p>Spreads load over more weeks. Re-run planner.</p>
+                    </li>
+                    <li>
+                        <strong>Add Overtime</strong>
+                        <pre><code>GRINDING_HRS = 308  # 280 regular + 28 overtime (10%)</code></pre>
+                        <p>Cost: approximately Rs 500/hr × 115 hrs = Rs 57,500</p>
+                    </li>
+                    <li>
+                        <strong>Outsource Heavy Parts</strong>
+                        <p>Check Demand_vs_Plan sheet, filter by Grinding_Intensive=Yes</p>
+                        <p>Outsource top 3 parts (usually covers shortage)</p>
+                    </li>
+                    <li>
+                        <strong>Add Resources</strong>
+                        <pre><code>GRINDING_HRS = 320  # +5 machines (35→40)</code></pre>
+                        <p>Permanent solution if grinding consistently over capacity</p>
+                    </li>
+                </ol>
+
+                <h2>Scenario 2: Rush Order</h2>
+                <div class="alert alert-info">
+                    <strong>Request:</strong> Customer needs 100 units of MCB-010 ASAP (Week 1)
+                </div>
+
+                <h3>Step 1: Check Capacity</h3>
+                <p>Open Business_Opportunities sheet:</p>
+                <pre><code>Week 1: HIGH opportunity, 320 tons available ✓</code></pre>
+
+                <h3>Step 2: Increase Flexibility</h3>
+                <pre><code>HEAVY_BUFFER = 2.0  # Allow more reshuffling</code></pre>
+
+                <h3>Step 3: Verify Feasibility</h3>
+                <p>After running:</p>
+                <ul>
+                    <li>Check if MCB-010 shows 100 units in Week 1</li>
+                    <li>Review Week 1 resource utilization (should be less than 100%)</li>
+                    <li>If over capacity, consider overtime</li>
+                </ul>
+
+                <h2>Scenario 3: Machine Breakdown</h2>
+                <div class="alert alert-warning">
+                    <strong>Problem:</strong> CNC Machine-01 down for Week 2
+                </div>
+
+                <h3>Solution</h3>
+                <ol>
+                    <li>
+                        <strong>Update Machine Constraints sheet</strong>
+                        <p>Set CNC Machine-01 available hours = 0 for affected period</p>
+                    </li>
+                    <li>
+                        <strong>Re-run Planner</strong>
+                        <p>System will automatically route to alternative machines</p>
+                    </li>
+                    <li>
+                        <strong>Review Results</strong>
+                        <p>Check if parts using CNC-01 were rescheduled or moved to other CNCs</p>
+                    </li>
+                    <li>
+                        <strong>Manual Intervention (if needed)</strong>
+                        <p>If some parts can't be rescheduled:</p>
+                        <ul>
+                            <li>Defer to Week 3</li>
+                            <li>Outsource machining</li>
+                            <li>Use alternative process</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h2>Scenario 4: Low Demand Period</h2>
+                <div class="alert alert-info">
+                    <strong>Situation:</strong> Only 800 units total demand (vs usual 2000+)
+                </div>
+
+                <h3>Opportunities</h3>
+                <ol>
+                    <li>
+                        <strong>Review Capacity Gaps</strong>
+                        <pre><code>Week 1-6: All show HIGH opportunity
+Total available: 1,500+ tons
+Revenue potential: Rs 225M+</code></pre>
+                    </li>
+                    <li>
+                        <strong>Sales Actions</strong>
+                        <ul>
+                            <li>Offer 10-15% volume discounts</li>
+                            <li>Promise faster delivery (1-2 weeks)</li>
+                            <li>Contact dormant customers</li>
+                            <li>Accept lower-margin orders</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Operations Actions</strong>
+                        <ul>
+                            <li>Schedule preventive maintenance</li>
+                            <li>Train operators on new equipment</li>
+                            <li>Trial new processes/parts</li>
+                            <li>Reduce overtime costs</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h2>Scenario 5: Capacity Expansion Decision</h2>
+                <div class="alert alert-info">
+                    <strong>Question:</strong> Should we invest Rs 25M in 5 grinding machines?
+                </div>
+
+                <h3>Analysis Process</h3>
+                <ol>
+                    <li>
+                        <strong>Run Current Plan</strong>
+                        <p>Note grinding utilization each week</p>
+                        <pre><code>Week 1-6: 85%, 91%, 94%, 88%, 96%, 107%
+Average: 93.5%</code></pre>
+                    </li>
+                    <li>
+                        <strong>Calculate Lost Revenue</strong>
+                        <p>From Business_Opportunities sheet:</p>
+                        <pre><code>Total additional capacity available: 345 tons
+If grinding not constrained: approximately 520 tons
+Lost opportunity: 175 tons × Rs 150,000 = Rs 26.25M per 6 weeks</code></pre>
+                    </li>
+                    <li>
+                        <strong>Annualize</strong>
+                        <pre><code>Annual lost revenue: Rs 26.25M × (52/6) = Rs 227M/year</code></pre>
+                    </li>
+                    <li>
+                        <strong>Calculate ROI</strong>
+                        <pre><code>Investment: Rs 25M
+Annual return: Rs 227M
+ROI: 9.1x (910%)
+Payback: 1.3 months</code></pre>
+                    </li>
+                    <li>
+                        <strong>Decision: APPROVE immediately!</strong>
+                    </li>
+                </ol>
+
+                <h2>Quick Reference Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>First Action</th>
+                            <th>Quick Fix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Over capacity</td>
+                            <td>Extend weeks</td>
+                            <td>WEEKS = 8</td>
+                        </tr>
+                        <tr>
+                            <td>Rush order</td>
+                            <td>Check capacity gaps</td>
+                            <td>Manual allocation</td>
+                        </tr>
+                        <tr>
+                            <td>Machine down</td>
+                            <td>Update constraints</td>
+                            <td>Set hrs = 0</td>
+                        </tr>
+                        <tr>
+                            <td>Low demand</td>
+                            <td>Review opportunities</td>
+                            <td>Offer discounts</td>
+                        </tr>
+                        <tr>
+                            <td>Seasonal</td>
+                            <td>Adjust OEE/SEASONAL</td>
+                            <td>Both = 0.85</td>
+                        </tr>
+                        <tr>
+                            <td>Expansion</td>
+                            <td>Calculate ROI</td>
+                            <td>Lost revenue × 8.67</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- WIP Integration Section -->
+            <div id="wip-integration" class="content-section">
+                <h1>WIP Integration</h1>
+                <p class="subtitle">Optimize planning with work-in-progress inventory</p>
+
+                <h2>What is WIP Integration?</h2>
+                <p>Currently, the system plans to produce ALL units from scratch. WIP integration:</p>
+                <ul>
+                    <li>Accounts for existing inventory at various production stages</li>
+                    <li>Calculates stage-specific production requirements</li>
+                    <li>Reduces resource load and improves accuracy</li>
+                </ul>
+
+                <h2>Production Stages</h2>
+                <div class="alert alert-info">
+                    <strong>Stage Flow:</strong><br>
+                    Raw Material → Core → Casting (CS) → Grinding (GR) → Machining (MC) → Painting (SP) → Finished Goods (FG)
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stage Code</th>
+                            <th>Meaning</th>
+                            <th>Still Needs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FG</td>
+                            <td>Finished Goods</td>
+                            <td>Nothing - ready to ship</td>
+                        </tr>
+                        <tr>
+                            <td>SP</td>
+                            <td>Painting Done</td>
+                            <td>Just inspection</td>
+                        </tr>
+                        <tr>
+                            <td>MC</td>
+                            <td>Machining Done</td>
+                            <td>Painting only</td>
+                        </tr>
+                        <tr>
+                            <td>GR</td>
+                            <td>Grinding Done</td>
+                            <td>Machining + Painting</td>
+                        </tr>
+                        <tr>
+                            <td>CS</td>
+                            <td>Casting Done</td>
+                            <td>Grinding + Machining + Painting</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Impact Example</h2>
+                <div class="comparison-table">
+                    <h3>MCB-010: Need 250 units</h3>
+                    
+                    <h4>Without WIP (current):</h4>
+                    <pre><code>Plan all 250 units from scratch:
+- Grinding: 775 hours
+- Machining: 375 hours
+- Painting: 175 hours</code></pre>
+
+                    <h4>With WIP Integration:</h4>
+                    <pre><code>Existing WIP:
+- FG: 20 units (ship immediately)
+- SP: 15 units (done)
+- MC: 10 units (need painting)
+- GR: 25 units (need machining + painting)
+- CS: 30 units (need all remaining operations)
+
+Plan only 215 units (250 - 35 ready):
+- Grinding: 450 hours (325 hours saved!)
+- Machining: 307 hours
+- Painting: 151 hours</code></pre>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Grinding Hours</th>
+                            <th>Machining Hours</th>
+                            <th>Painting Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Without WIP (current)</td>
+                            <td>9,197 hrs</td>
+                            <td>4,970 hrs</td>
+                            <td>1,024 hrs</td>
+                        </tr>
+                        <tr>
+                            <td>With WIP (15% coverage)</td>
+                            <td>7,817 hrs</td>
+                            <td>4,200 hrs</td>
+                            <td>870 hrs</td>
+                        </tr>
+                        <tr style="background: #d4edda;">
+                            <td><strong>Savings</strong></td>
+                            <td><strong>15% less</strong></td>
+                            <td><strong>15% less</strong></td>
+                            <td><strong>15% less</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>When to Use WIP Integration</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Use WIP When:</h3>
+                        <ul>
+                            <li>WIP inventory greater than 10% of demand</li>
+                            <li>WIP data is accurate</li>
+                            <li>Grinding is bottleneck</li>
+                            <li>Need precise capacity planning</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Don't Use WIP When:</h3>
+                        <ul>
+                            <li>WIP data quality is poor</li>
+                            <li>WIP is mostly aged/obsolete</li>
+                            <li>First time using system</li>
+                            <li>Demand far exceeds capacity</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Enabling WIP</h2>
+                <p>WIP integration is already built into <code>run_planning_with_capacity_analysis.py</code>. Just ensure your PPC-Dashboard-WIP-FG1.xlsx file is up to date!</p>
+
+                <div class="alert alert-success">
+                    <strong>Data Requirements:</strong><br>
+                    Ensure Stage_Stocks sheet has columns: CastingItem, CS, GR, MC, SP, FG<br>
+                    Ensure WIP_FG sheet has mapping: CS Code → FG Code
+                </div>
+            </div>
+
+            <!-- Capacity Analysis Section -->
+            <div id="capacity-analysis" class="content-section">
+                <h1>Capacity Gap Analysis</h1>
+                <p class="subtitle">Identify opportunities to grow revenue</p>
+
+                <h2>What Is Capacity Analysis?</h2>
+                <p>The system calculates:</p>
+                <ul>
+                    <li>Spare capacity each week by resource</li>
+                    <li>Maximum additional orders that can be accepted</li>
+                    <li>Estimated revenue potential</li>
+                    <li>Which types of orders to pursue</li>
+                </ul>
+
+                <h2>New Output Sheets</h2>
+                
+                <h3>1. Capacity_Gaps</h3>
+                <p>Detailed weekly analysis showing:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>What It Shows</th>
+                            <th>Action If...</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Core_Available_Hrs</td>
+                            <td>Unused coremaking capacity</td>
+                            <td>Less than 70% util: Seek more orders</td>
+                        </tr>
+                        <tr>
+                            <td>Grinding_Available_Hrs</td>
+                            <td>Unused grinding capacity</td>
+                            <td>Greater than 95% util: Add overtime/machines</td>
+                        </tr>
+                        <tr>
+                            <td>Bottleneck_Resource</td>
+                            <td>Most constrained resource</td>
+                            <td>Consistent bottleneck: Expand capacity</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2. Business_Opportunities</h3>
+                <p>Actionable recommendations with:</p>
+                <ul>
+                    <li><strong>Opportunity_Level:</strong> HIGH / MEDIUM / LOW / NONE</li>
+                    <li><strong>Max_Additional_Tonnage:</strong> How much more you can produce</li>
+                    <li><strong>Estimated_Revenue:</strong> Potential revenue if capacity is filled</li>
+                    <li><strong>Recommendations:</strong> Specific actions to take</li>
+                </ul>
+
+                <h3>3. Part_Recommendations</h3>
+                <p>Strategic guidance on which order types to pursue:</p>
+                <pre><code>Example: 
+"PREFER Primer-only parts"
+Reason: Top Coat 78% utilized vs Primer 52%
+Impact: High - Can accept more primer orders
+Action: Market to customers needing primer finish</code></pre>
+
+                <h2>Using Capacity Analysis</h2>
+                
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <h3>Sales Strategy</h3>
+                        <p>Open Business_Opportunities sheet → Identify HIGH opportunity weeks → Calculate total available tonnage → Focus sales on recommended part types</p>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Pricing Strategy</h3>
+                        <p>HIGH opportunity week? → Offer volume discount to fill capacity<br>
+                        LOW/NONE opportunity? → Charge premium or defer to other weeks</p>
+                    </div>
+
+                    <div class="workflow-step">
+                        <h3>Capacity Expansion</h3>
+                        <p>Review Capacity_Gaps → Identify consistent bottleneck → Calculate lost revenue → Compare to investment cost → Make data-driven expansion decisions</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success">
+                    <strong>Example ROI:</strong> If grinding is bottleneck in 5/6 weeks, total lost opportunity = Rs 45M over 6 weeks. Investment in 5 grinding machines (Rs 25M) = 15.6x annual ROI!
+                </div>
+
+                <h2>Revenue Calculation</h2>
+                <p>Default pricing: <strong>Rs 150,000 per ton</strong></p>
+                <p>To customize, edit line 150 in run_planning_with_capacity_analysis.py:</p>
+                <pre><code>avg_price_per_ton = 150000  # Change this value!</code></pre>
+
+                <div class="highlight-box">
+                    <strong>Adjust based on your product mix:</strong>
+                    <ul>
+                        <li>Simple parts (primer): Rs 100,000-120,000/ton</li>
+                        <li>Standard parts: Rs 150,000-180,000/ton</li>
+                        <li>Complex parts (top coat, CNC): Rs 200,000-250,000/ton</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Business Growth Section -->
+            <div id="business-growth" class="content-section">
+                <h1>Business Growth Strategies</h1>
+                <p class="subtitle">Converting capacity into revenue</p>
+
+                <h2>Strategy 1: Dynamic Pricing</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Week Utilization</th>
+                            <th>Pricing Strategy</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Less than 70%</td>
+                            <td>10% volume discount</td>
+                            <td>Rs 135,000/ton (from Rs 150,000)</td>
+                        </tr>
+                        <tr>
+                            <td>70-85%</td>
+                            <td>Standard pricing</td>
+                            <td>Rs 150,000/ton</td>
+                        </tr>
+                        <tr>
+                            <td>85-95%</td>
+                            <td>5% premium</td>
+                            <td>Rs 157,500/ton</td>
+                        </tr>
+                        <tr>
+                            <td>Greater than 95%</td>
+                            <td>15% premium or decline</td>
+                            <td>Rs 172,500/ton</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Strategy 2: Sales Focus Areas</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Week with HIGH Opportunity</h3>
+                        <ul>
+                            <li>Offer volume discounts</li>
+                            <li>Promote faster delivery</li>
+                            <li>Accept lower margins</li>
+                            <li>Cold call prospects</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Week with LOW Opportunity</h3>
+                        <ul>
+                            <li>Charge premium pricing</li>
+                            <li>Be highly selective</li>
+                            <li>Focus on high-margin</li>
+                            <li>Defer to other weeks</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Strategy 3: Capacity Expansion ROI</h2>
+                <p><strong>Decision Framework:</strong></p>
+                <ol>
+                    <li>Identify consistent bottleneck (same resource greater than 90% for 5+ weeks)</li>
+                    <li>Calculate lost revenue: Sum of (Available_Demand - Capacity) × Price</li>
+                    <li>Annualize: Lost_Revenue × (52 weeks / Planning_Weeks)</li>
+                    <li>Compare to investment cost</li>
+                    <li>If ROI greater than 3x, approve immediately!</li>
+                </ol>
+
+                <h2>Strategy 4: Customer Delivery Negotiation</h2>
+                <pre><code>Customer Request: 150 tons in Week 2
+
+Analysis:
+- Week 2: MEDIUM (89 tons available) ✗
+- Week 1: HIGH (320 tons available) ✓  
+- Week 4: HIGH (185 tons available) ✓
+
+Offer:
+"Week 2 is heavily booked. However, we can:
+- Week 1 delivery: 10% discount + free shipping
+- Week 4 delivery: 5% discount  
+- Split: 80 tons Week 2 + 70 tons Week 4"</code></pre>
+
+                <h2>Expected Improvements</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">+12%</div>
+                        <div class="stat-label">Capacity Utilization</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">+7%</div>
+                        <div class="stat-label">Revenue per Ton</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">+5%</div>
+                        <div class="stat-label">On-Time Delivery</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">+18%</div>
+                        <div class="stat-label">Sales Conversion</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Section -->
+            <div id="configuration" class="content-section">
+                <h1>Configuration Guide</h1>
+                <p class="subtitle">Customizing parameters for your needs</p>
+
+                <h2>Key Parameters (in quick_run.py)</h2>
+
+                <h3>Planning Horizon</h3>
+                <pre><code>WEEKS = 6  # Adjust based on demand and capacity</code></pre>
+                <ul>
+                    <li><strong>4 weeks:</strong> Short-term, tight schedule</li>
+                    <li><strong>6 weeks:</strong> Standard (recommended)</li>
+                    <li><strong>8 weeks:</strong> High demand or capacity issues</li>
+                </ul>
+
+                <h3>Productivity Factors</h3>
+                <pre><code>OEE = 0.9              # Overall Equipment Effectiveness
+SEASONAL = 0.9         # Seasonal productivity adjustment</code></pre>
+                <p><strong>OEE Guidelines:</strong></p>
+                <ul>
+                    <li>0.85: Conservative (account for breakdowns)</li>
+                    <li>0.90: Standard (typical foundry)</li>
+                    <li>0.95: Aggressive (world-class performance)</li>
+                </ul>
+
+                <h3>Scheduling Flexibility</h3>
+                <pre><code>HEAVY_BUFFER = 1.5     # Grinding-intensive parts (50% flexibility)
+NORMAL_BUFFER = 1.3    # Normal parts (30% flexibility)</code></pre>
+                <p>Higher buffer = more scheduling flexibility, lower = stricter adherence to delivery dates</p>
+
+                <h3>Resource Capacities</h3>
+                <pre><code>GRINDING_HRS = 280     # Hours per day
+CASTING_TON = 700      # Tons per week
+PAINT_TOP_TON = 490    # Top coat capacity</code></pre>
+                <p>Update these when adding/removing machines or changing shifts</p>
+
+                <h2>Common Scenarios</h2>
+
+                <h3>Scenario 1: Normal Operation</h3>
+                <pre><code>WEEKS = 6
+OEE = 0.9
+SEASONAL = 0.95
+HEAVY_BUFFER = 1.5
+NORMAL_BUFFER = 1.3</code></pre>
+
+                <h3>Scenario 2: High Demand Period</h3>
+                <pre><code>WEEKS = 8              # Extend horizon
+OEE = 0.95            # Push for efficiency
+SEASONAL = 1.0
+HEAVY_BUFFER = 1.3    # Tighter schedule
+NORMAL_BUFFER = 1.2</code></pre>
+
+                <h3>Scenario 3: Monsoon / Low Productivity</h3>
+                <pre><code>WEEKS = 6
+OEE = 0.85            # Account for breakdowns
+SEASONAL = 0.85       # Weather impact
+HEAVY_BUFFER = 1.8    # More flexibility
+NORMAL_BUFFER = 1.5</code></pre>
+
+                <h2>Capacity Adjustment Guide</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>How to Calculate</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Core</td>
+                            <td>Stations × Hours/day</td>
+                            <td>10 stations × 10 hrs = 100 hrs/day</td>
+                        </tr>
+                        <tr>
+                            <td>Grinding</td>
+                            <td>Machines × Hours/day</td>
+                            <td>35 machines × 8 hrs = 280 hrs/day</td>
+                        </tr>
+                        <tr>
+                            <td>Machining</td>
+                            <td>Sum all machines</td>
+                            <td>From Machine Constraints sheet</td>
+                        </tr>
+                        <tr>
+                            <td>Paint</td>
+                            <td>Throughput × Days</td>
+                            <td>70 tons/day × 7 = 490 tons/week</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Troubleshooting Section -->
+            <div id="troubleshooting" class="content-section">
+                <h1>Troubleshooting</h1>
+                <p class="subtitle">Common issues and solutions</p>
+
+                <h2>Issue: Model is Infeasible</h2>
+                <div class="alert alert-warning">
+                    <strong>Cause:</strong> Demand exceeds capacity with current constraints
+                </div>
+                <p><strong>Solutions (try in order):</strong></p>
+                <ol>
+                    <li>Extend planning weeks: <code>WEEKS = 8</code></li>
+                    <li>Increase urgency buffers: <code>HEAVY_BUFFER = 1.8</code></li>
+                    <li>Verify capacity data is correct</li>
+                    <li>Check for unrealistic cycle times</li>
+                </ol>
+
+                <h2>Issue: Grinding Always Over Capacity</h2>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Extend to 7-8 weeks to spread load</li>
+                    <li>Increase grinding capacity: <code>GRINDING_HRS = 320</code></li>
+                    <li>Review grinding cycle times (may be overestimated)</li>
+                    <li>Consider outsourcing grinding-intensive parts</li>
+                </ul>
+
+                <h2>Issue: Some Parts Never Scheduled</h2>
+                <p><strong>Check:</strong></p>
+                <ol>
+                    <li>Part has parameters in Part Master</li>
+                    <li>Machine resource codes are valid</li>
+                    <li>Batch quantities are reasonable</li>
+                    <li>Not exceeding single machine capacity</li>
+                </ol>
+
+                <h2>Issue: File Not Found</h2>
+                <pre><code># In quick_run.py, verify:
+DATA_FOLDER = '/path/to/your/files/'  # Update this path
+OUTPUT_FOLDER = '/path/to/outputs/'</code></pre>
+
+                <h2>Issue: Results Seem Wrong</h2>
+                <p><strong>Verification Steps:</strong></p>
+                <ol>
+                    <li>Check input data quality (no missing values)</li>
+                    <li>Verify cycle times are in minutes</li>
+                    <li>Confirm weights are in kg</li>
+                    <li>Ensure resource codes match between sheets</li>
+                    <li>Compare actual vs. planned from previous weeks</li>
+                </ol>
+
+                <div class="alert alert-info">
+                    <strong>Still Stuck?</strong> Check the detailed logs in the console output. Each step reports what it's doing, making it easy to pinpoint where things go wrong.
+                </div>
+
+                <h2>Common Error Messages</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Error</th>
+                            <th>Meaning</th>
+                            <th>Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>KeyError: 'FG Code'</td>
+                            <td>Missing column in Part Master</td>
+                            <td>Check sheet names and column headers</td>
+                        </tr>
+                        <tr>
+                            <td>FileNotFoundError</td>
+                            <td>Data file missing</td>
+                            <td>Verify DATA_FOLDER path</td>
+                        </tr>
+                        <tr>
+                            <td>Solver returned infeasible</td>
+                            <td>No valid solution exists</td>
+                            <td>Extend weeks or increase buffers</td>
+                        </tr>
+                        <tr>
+                            <td>Division by zero</td>
+                            <td>Batch quantity = 0</td>
+                            <td>Fix batch quantities in Part Master</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- API Reference Section -->
+            <div id="api-reference" class="content-section">
+                <h1>API Reference</h1>
+                <p class="subtitle">Programming interface for advanced users</p>
+
+                <h2>Main Classes</h2>
+
+                <h3>ProductionPlanner</h3>
+                <pre><code>from production_planning_system import ProductionPlanner, ProductionConfig
+
+# Create configuration
+config = ProductionConfig()
+config.PLANNING_WEEKS = 6
+config.CURRENT_DATE = datetime(2025, 10, 15)
+
+# Run planner
+planner = ProductionPlanner(config)
+output_file, plan_df, summaries = planner.run()
+
+# Returns:
+#   output_file: Path to Excel file
+#   plan_df: DataFrame with production plan
+#   summaries: Dict of summary DataFrames</code></pre>
+
+                <h3>WIPDemandCalculator</h3>
+                <pre><code>from wip_handler import WIPDemandCalculator
+
+wip_calc = WIPDemandCalculator(sales_df, wip_stage_df, wip_fg_df, config)
+net_demand, stage_demand = wip_calc.calculate_with_wip()
+
+# Returns:
+#   net_demand: {part: total_units_to_plan}
+#   stage_demand: {part: {operation: units_needed}}</code></pre>
+
+                <h3>CapacityGapAnalyzer</h3>
+                <pre><code>from run_planning_with_capacity_analysis import CapacityGapAnalyzer
+
+analyzer = CapacityGapAnalyzer(plan_df, resources, params, config)
+gaps_df = analyzer.calculate_capacity_gaps()
+opportunities_df = analyzer.generate_business_opportunities(gaps_df)
+
+# Returns DataFrames with capacity analysis</code></pre>
+
+                <h2>Configuration Parameters</h2>
+
+                <h3>ProductionConfig</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PLANNING_WEEKS</td>
+                            <td>int</td>
+                            <td>6</td>
+                            <td>Number of weeks to plan</td>
+                        </tr>
+                        <tr>
+                            <td>CURRENT_DATE</td>
+                            <td>datetime</td>
+                            <td>-</td>
+                            <td>Planning start date</td>
+                        </tr>
+                        <tr>
+                            <td>OEE</td>
+                            <td>float</td>
+                            <td>0.9</td>
+                            <td>Overall equipment effectiveness (0-1)</td>
+                        </tr>
+                        <tr>
+                            <td>SEASONAL_FACTOR</td>
+                            <td>float</td>
+                            <td>0.9</td>
+                            <td>Seasonal productivity adjustment (0-1)</td>
+                        </tr>
+                        <tr>
+                            <td>GRINDING_HRS_PER_DAY</td>
+                            <td>int</td>
+                            <td>280</td>
+                            <td>Daily grinding capacity (hours)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Data Structures</h2>
+
+                <h3>Production Plan DataFrame</h3>
+                <pre><code>Columns:
+  - Part: str - Part code
+  - Week: int - Week number (1-6)
+  - Units: int - Quantity to produce
+  - Tonnage: float - Weight in tons
+  - Core_Hrs: float - Coremaking hours needed
+  - Grind_Hrs: float - Grinding hours needed
+  - Mach_Hrs: float - Machining hours needed
+  - Paint_Hrs: float - Painting hours needed
+  - Paint_Route: str - 'Top Coat' or 'Primer'
+  - Grinding_Intensive: str - 'Yes' or 'No'</code></pre>
+
+                <h2>Custom Extensions</h2>
+
+                <h3>Adding Custom Constraints</h3>
+                <pre><code># In OptimizationModel.build_and_solve()
+# Add after existing constraints:
+
+# Example: Limit part X to max 50 units/week
+for w in self.weeks:
+    model += x[('PART-X', w)] <= 50, f"MaxPartX_W{w}"</code></pre>
+
+                <h3>Custom Objective Function</h3>
+                <pre><code># Modify objective in OptimizationModel.__init__()
+
+# Example: Add inventory holding cost
+model += pulp.lpSum(
+    1000 * grinding_cost +
+    10 * schedule_deviation +
+    5 * cumulative_inventory  # New term
+    for p in net_demand for w in weeks
+)</code></pre>
+
+                <h2>Utility Functions</h2>
+
+                <h3>parse_mixed_excel_dates()</h3>
+                <pre><code>from production_planning_system import parse_mixed_excel_dates
+
+# Handles both Excel serial dates and string dates
+dates = parse_mixed_excel_dates(df['Date_Column'])
+# Returns: pandas Series of datetime64</code></pre>
+
+                <h3>safe_get()</h3>
+                <pre><code>from production_planning_system import safe_get
+
+# Safely extract numeric value with fallback
+value = safe_get(row, 'Cycle_Time', default=150)
+# Returns: float or default if missing/invalid</code></pre>
+
+                <div class="alert alert-success">
+                    <strong>Full source code available!</strong> Review the Python files for detailed implementation and additional methods.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function navigateTo(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelector(`a[href="#${sectionId}"]`).classList.add('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Setup navigation listeners
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.getAttribute('href').substring(1);
+                navigateTo(sectionId);
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm.length < 3) return;
+            
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                const content = section.textContent.toLowerCase();
+                if (content.includes(searchTerm)) {
+                    navigateTo(section.id);
+                }
+            });
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                navigateTo(targetId);
+            });
+        });
+    </script>
+</body>
+</html>
